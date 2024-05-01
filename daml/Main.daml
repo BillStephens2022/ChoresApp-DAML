@@ -48,15 +48,16 @@ template ChoreProposal
                     parentInContract = parent
                     childInContract = child
                     choreName = chore
-                
-
-
-            
-
-
         
-
 -- Contract
+template ChoreContract
+    with
+        parentInContract : Party
+        childInContract : Party
+        choreName : Text
+    where
+        signatory parentInContract, childInContract
+        
 
 -- Sample user setup -- TO BE UPDATED!
 setup: Script ()
