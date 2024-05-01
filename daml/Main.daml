@@ -7,19 +7,19 @@ import Daml.Script
 -- Sample user setup -- TO BE UPDATED!
 setup: Script ()
 setup = script do
-  jerry <- allocatePartyWithHint "Jerry" (PartyIdHint "Jerry")
-  elaine <- allocatePartyWithHint "Elaine" (PartyIdHint "Elaine")
-  kramer <- allocatePartyWithHint "Kramer" (PartyIdHint "Kramer")
+  mike <- allocatePartyWithHint "Mike" (PartyIdHint "Mike")
+  marcia <- allocatePartyWithHint "Marcia" (PartyIdHint "Marcia")
+  greg <- allocatePartyWithHint "Greg" (PartyIdHint "Greg")
   
   -- 2. Construct user-id's from text
-  jerryId <- validateUserId "Jerry"
-  elaineId <- validateUserId "Elaine"
-  kramerId <- validateUserId "Kramer"
+  mikeId <- validateUserId "Mike"
+  marciaId <- validateUserId "Marcia"
+  gregId <- validateUserId "Greg"
 
   -- 3. Create users with the given rights
-  createUser (User jerryId (Some jerry)) [CanActAs jerry]
-  createUser (User elaineId (Some elaine)) [CanActAs elaine]
-  createUser (User kramerId (Some kramer)) [CanActAs kramer]
+  createUser (User mikeId (Some mike)) [CanActAs mike]
+  createUser (User marciaId (Some marcia)) [CanActAs marcia]
+  createUser (User gregId (Some greg)) [CanActAs greg]
 
   return ()
 
