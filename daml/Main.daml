@@ -78,3 +78,33 @@ setup = script do
 
   return ()
 
+testContract: Script ChoreContractId 
+testContract = script do
+    mike <- allocateParty "Mike" 
+    marcia <- allocateParty "Marcia"
+    greg <- allocateParty "Greg" 
+    -- child proposes a chore
+    marciaProposal1 <- submit marcia do
+        createCmd ChoreProposal with
+            child = marcia
+            parent = mike
+            chore = "Take out today's recycling for 5,000 vbucks"
+            note = "Please!!! I don't want to be in default!"
+
+    --- parent rejects chore, gives feedback
+    mikeRejectsProposal <- submit mike do
+        exerciseCmd marciaProposal1 Reject
+            with    
+                feedback = "You're joking right?!?!? Be realistic on the price, maybe 2,800 for entire month"
+    
+    -- child revises the terms, and re-proposes
+    marciaProposal2 <- submit marcia do
+        exerciseCmd mikeRejectsProposal Revise
+            with
+                revision = "Take out recycling 4 times this month for 2,800 vbucks"
+                feedbackText = "OK fine, you're so cheap!"
+
+    -- parent accepts the chore proposal
+    submit mike do
+        exerciseCmd marciaProposal2 Accept
+
