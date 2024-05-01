@@ -2,7 +2,61 @@ module Main where
 
 import Daml.Script
 
+type ChoreProposalId = ContractId ChoreProposal
+type ChoreContractId = ContractId ChoreContract
 
+-- Proposal
+template ChoreProposal
+    with
+        child : Party
+        parent : Party
+        chore : Text
+        note : Text
+    where
+        signatory child
+        observer parent
+        -- What the Child Can do:
+        -- Propose a chore
+        choice Propose : ChoreProposalId
+            controller child
+            do
+                create this
+        -- Revise a Chore
+        choice Revise : ChoreProposalId
+            with
+                revision : Text
+                feedbackText : Text
+            controller child
+            do
+                create this with
+                    chore = revision
+                    note = feedbackText
+        -- What the Parent can do:
+        -- Reject a chore proposal
+        choice Reject : ChoreProposalId
+            with
+                feedback : Text
+            controller parent
+            do
+                create this with
+                    note = feedback
+        -- Accept a chore proposal
+        choice Accept : ChoreContractId
+            controller parent
+            do
+                create ChoreContract with
+                    parentInContract = parent
+                    childInContract = child
+                    choreName = chore
+                
+
+
+            
+
+
+        
+
+-- Contract
 
 -- Sample user setup -- TO BE UPDATED!
 setup: Script ()
